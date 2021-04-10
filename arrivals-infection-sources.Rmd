@@ -5,26 +5,67 @@ date: "10/04/2021"
 output: html_document
 ---
 
+Driving question: What is the contribution of returning Australians to COVID-19 cases in Australia?
+
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(readxl)
+library(janitor)
+library(stringr)
+library(lubridate)
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+nsw_cases <- read_csv("data/infection_source_nsw.csv")
+vic_cases <- read_csv("data/infection_source_victoria.csv")
+airport_arrivals <- read_csv("data/arrivals_by_airport.csv")
+au_cities <- read_csv("data/aus_cities_by_state.csv")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Data wrangeling
+
+```{r}
+
+colnames(vic_cases) = colnames(nsw_cases) = c("notification_date", "infection_source" )
+
+
+vic_cases = vic_cases %>% mutate(infection_source = case_when(
+  infection_source == "Travel overseas" ~ "international",
+  infection_source == "Acquired in Australia, unknown source" ~ "domestic", 
+  infection_source == "Contact with a confirmed case" ~ "domestic", 
+  TRUE ~ infection_source
+))
+
+nsw_cases = nsw_cases %>% mutate(infection_source = case_when(
+  infection_source == "Locally acquired - no links to known case or cluster" ~ "domestic", 
+  infection_source == "Locally acquired - linked to known case or cluster"  ~ "domestic",
+  infection_source == "Interstate" ~ "domestic", 
+  infection_source == "Overseas" ~ "international"
+))
+
+# city data
+colnames(au_cities)[2:3] = c("city", "state")
+au_cities = au_cities[, 2:3]
+
+# airport data 
+colnames(airport_arrivals) = tolower(colnames(airport_arrivals)) 
+airport_arrivals$airport = str_to_title(airport_arrivals$airport)
+airport_arrivals = airport_arrivals %>% filter(year %in% c("2020", "2021")) 
+
+au_cities = au_cities[au_cities$city %in% unique(airport_arrivals$airport),]
+
+
+# for each airport, get the state
+airport_arrivals = merge(au_cities, airport_arrivals, by.x = "city", by.y = "airport") 
+airport_arrivals <- airport_arrivals %>% filter(state %in% c("New South Wales", "Victoria")) %>% mutate(date = make_date(year, month),                                                                               .keep = "unused",                                                               .before = 2)
+
+```
+
