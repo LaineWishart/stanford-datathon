@@ -21,6 +21,7 @@ library(readxl)
 library(janitor)
 library(stringr)
 library(lubridate)
+library(plotly)
 ```
 
 ```{r}
@@ -32,6 +33,7 @@ au_cities <- read_csv("data/aus_cities_by_state.csv")
 
 ## Data wrangeling
 
+To wrangle the data, first we need to standardise the column names for both NSW and VIC infection sources. After this, we'll merge the two datasets. 
 ```{r}
 
 colnames(vic_cases) = colnames(nsw_cases) = c("date", "infection_source" )
@@ -51,6 +53,25 @@ nsw_cases = nsw_cases %>% mutate(infection_source = case_when(
   infection_source == "Overseas" ~ "international"
 ))
 
+vic_cases$state = rep("Victoria", nrow(vic_cases))
+nsw_cases$state = rep("New South Wales", nrow(nsw_cases))
+
+vic_cases = vic_cases %>% 
+  group_by(state, date, infection_source) %>% 
+  summarise(count = n()) %>%
+  pivot_wider(names_from = infection_source, values_from = count) %>% mutate(domestic = replace_na(domestic, 0),
+                                                                             international = replace_na(international, 0))
+
+nsw_cases = nsw_cases %>% group_by(state, date, infection_source) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = infection_source, values_from = count) %>%
+  mutate(
+    domestic = replace_na(domestic, 0),  
+    international = replace_na(international, 0))
+
+
+cases <- rbind(nsw_cases, vic_cases) %>% group_by(date, state, domestic, international)
+
 # city data
 colnames(au_cities)[2:3] = c("city", "state")
 au_cities = au_cities[, 2:3]
@@ -67,30 +88,32 @@ au_cities = au_cities[au_cities$city %in% unique(airport_arrivals$airport),]
 airport_arrivals = merge(au_cities, airport_arrivals, by.x = "city", by.y = "airport") 
 airport_arrivals <- airport_arrivals %>% filter(state %in% c("New South Wales", "Victoria")) %>% mutate(date = make_date(year, month),                                                                               .keep = "unused",                                                               .before = 2)
 
-dates_2020 <- seq(as.Date("2020-01-01"), as.Date("2020-12-31"), by="day")
-vic_cases$state = rep("Victoria", nrow(vic_cases))
-nsw_cases$state = rep("New South Wale", nrow(nsw_cases))
+
+```
 
 
-vic_cases = vic_cases %>%
-  group_by(state, date, infection_source) %>% 
-  summarise(count = n()) %>%
-  pivot_wider(names_from = infection_source, values_from = count) %>% mutate(domestic = replace_na(domestic, 0),
-                                                                             international = replace_na(international, 0))
+## Data investigation 
 
-nsw_cases = nsw_cases %>% group_by(state, date, infection_source) %>% 
-  summarise(count = n()) %>% 
-  pivot_wider(names_from = infection_source, values_from = count) %>%
-  mutate(
-    domestic = replace_na(domestic, 0),  
-    international = replace_na(international, 0))
-  
-  
-rbind(nsw_cases, vic_cases) %>% group_by(date, state, domestic, international)
+What proportion of COVID-19 cases come from international arrivals? 
 
-                                                                                                                    
-                                              
 
+```{r}
+cases_long <- cases %>%
+  pivot_longer(cols = c("domestic", "international"), names_to = "infection_source", values_to = "cases") 
+
+cases_long_grpd <- cases_long %>% group_by(state, month = lubridate::floor_date(date, "month"), infection_source) %>% summarize(cases = sum(cases)) 
+
+
+cases_long_grpd %>% 
+  ggplot(aes(x = month, y = cases, fill = infection_source)) + 
+  geom_bar(stat = "identity")
+
+
+p1 <- cases_long %>%
+  ggplot(aes(x = date, y = cases, fill = infection_source)) +
+  geom_histogram(stat = "identity") + facet_wrap(~state, nrow=2) + theme_bw() + labs(title = "COVID-19 cases by infection source", x = "", y = "Daily COVID-19 cases", fill = "Infection source") 
+
+ggplotly(p1)
 
 
 ```
