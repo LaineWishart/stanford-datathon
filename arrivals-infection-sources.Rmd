@@ -34,7 +34,7 @@ au_cities <- read_csv("data/aus_cities_by_state.csv")
 
 ```{r}
 
-colnames(vic_cases) = colnames(nsw_cases) = c("notification_date", "infection_source" )
+colnames(vic_cases) = colnames(nsw_cases) = c("date", "infection_source" )
 
 
 vic_cases = vic_cases %>% mutate(infection_source = case_when(
@@ -66,6 +66,32 @@ au_cities = au_cities[au_cities$city %in% unique(airport_arrivals$airport),]
 # for each airport, get the state
 airport_arrivals = merge(au_cities, airport_arrivals, by.x = "city", by.y = "airport") 
 airport_arrivals <- airport_arrivals %>% filter(state %in% c("New South Wales", "Victoria")) %>% mutate(date = make_date(year, month),                                                                               .keep = "unused",                                                               .before = 2)
+
+dates_2020 <- seq(as.Date("2020-01-01"), as.Date("2020-12-31"), by="day")
+vic_cases$state = rep("Victoria", nrow(vic_cases))
+nsw_cases$state = rep("New South Wale", nrow(nsw_cases))
+
+
+vic_cases = vic_cases %>%
+  group_by(state, date, infection_source) %>% 
+  summarise(count = n()) %>%
+  pivot_wider(names_from = infection_source, values_from = count) %>% mutate(domestic = replace_na(domestic, 0),
+                                                                             international = replace_na(international, 0))
+
+nsw_cases = nsw_cases %>% group_by(state, date, infection_source) %>% 
+  summarise(count = n()) %>% 
+  pivot_wider(names_from = infection_source, values_from = count) %>%
+  mutate(
+    domestic = replace_na(domestic, 0),  
+    international = replace_na(international, 0))
+  
+  
+rbind(nsw_cases, vic_cases) %>% group_by(date, state, domestic, international)
+
+                                                                                                                    
+                                              
+
+
 
 ```
 
