@@ -1,12 +1,15 @@
 ---
 title: "What you can and can't do to change your grades"
 author: "Laine Wishart and Asela Gunatilake"
-date: "11/04/2021"
+date: "April 11th, 2021"
 output:
   html_document:
     code_folding: hide
   pdf_document: default
 ---
+
+[Github repo](https://github.com/LaineWishart/stanford-datathon) | Team No: 113 | Track No: 1
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -95,11 +98,13 @@ d.all %>%
   ggplot(aes(x = Medu, y = G3, fill = subject)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Subject") + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
-## Hard work pays off
-
 In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan (Matsuoka et al., 2015). They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason. Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
 
-## 
+
+## Hard work pays off
+
+***
+
 ```{r}
 d.all %>% ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
@@ -113,10 +118,6 @@ Although parent education appears to affect how students spend their free time a
 
 ***
 
-Important to note the balance between 
-
-
-The dataset has 
 
 
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
@@ -154,7 +155,7 @@ d.all %>% ggplot(aes(x = freetime, y = G3)) + geom_boxplot() + labs(title = "Aca
 The results based on the sample of 365 students, shows that having very little free time and having too much free time can both result in lower grades. This result is more pronounced in language test results. However, for both math and language a _"goldilocks"_ zone of "free time" appears to correspond with the cohort of strongest academic achievers. This result is inline with the conventional wisdom that achieving a optimal _"work live balance"_ is beneficial for academic accomplishment.
 
 
-## Finding the sweetspot in going out
+## Finding the sweet spot in going out
 
 ***
 
@@ -169,13 +170,12 @@ A similar trend appears when we compare student performance and their frequency 
 
 
 
-
-
-
 # Conclusion 
 
+What makes a good student from a bad student? This study from a Portugese highschool in 2015 shed some light on the internal and external factors driving student academic performance. While some students start off with an advantage based on their parents' education level, there are still many factors within a student's control. One of the key things we discussed here was finding the right balance between work and play. If there is any advice we can give to students during these troubling times, it is to make sure to take a breather! 
 
-References 
+
+# References 
 
 * Matsuoka, R., Nakamuro, M. and Inui, T., 2015. Emerging inequality in effort: A longitudinal investigation of parental involvement and early elementary school-aged children’s learning time in Japan. Social Science Research, 54, pp.159-176.
 
