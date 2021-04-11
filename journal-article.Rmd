@@ -20,12 +20,85 @@ library(tidyverse)
 library(dplyr)
 library(janitor)
 
-d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
-d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
 ```
+
+breaking down the factors that influence your grades based on a the dataset.
+
+In this sample of students, aged between 16 - 22,male female ratio, attended two schools in Portugal, demographic data were collected among with scores for Math and Portuguese. 
+
+We have divided the attributes based on environmental, non, controllable factors (e.g. age, gender, family background) and  "factors that can be controlled by the student" xx (e.g. number of hours spent studying, frequency of going out, alcohol consumption ). Our analyses indicate that both factors played a role in determining student grade and may be transferable to university setting. 
+
+
+More importantly, students who found a __"goldilocks"__ zone between work and life appeared to perform strongest as a group.
+
+
+__top achievers what did they look like???maybe look at the top 5% and find their attributes???__
 
 
 # Family influence on student achievement 
+
+
+# Student choices on student achievement (to do)  
+
+Important to note the balance between 
+
+
+## The amount of hours you study translates to higher marks, but at a diminishing rate  
+
+```{r}
+d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
+d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+par(mfrow=c(1,2))
+boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ studytime, data = d.port, main= "Studytime and Mark for language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+#caption: weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+```
+
+In this study, students were able to achieve better marks by increasing the weekly study time for both math and language. However, it is important to note that studying more than 10h per week per subject did not necessarily improve students academic performance, we can observe this in "Fig. x" where grades for Portuguese in fact deteriorated relative to students who studied between 5 - 10 hours a week. This may be due to additional studying infringing on students' free time and the ability to engage in social and other extra curricular activities.  
+
+
+## Not having free time is expensive, having too much of it is not good either
+```{r}
+d.all <- d.all %>% mutate(freetime = case_when(
+  freetime == 1 ~"Very Low", 
+  freetime == 2 ~ "Low", 
+  freetime == 3 ~ "Average", 
+  freetime == 4 ~ "High",
+  freetime == 5 ~ "Very High"
+))
+
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+```
+
+The results based on this dataset shows that not having or having very limited free time negatively impacts student grades whilst having too much free time deteriorates performance. This is more strongly applicable for the performance in the language test. For both math and language a _"goldilocks"_ level of free time appears to correspond with the cohort of strongest academic performance.  
+
+
+## Findind the sweetspot in going out
+
+```{r}
+
+d.all <- d.all %>% mutate(goout = case_when(
+  goout == 1 ~"Very Low", 
+  goout == 2 ~ "Low", 
+  goout == 3 ~ "Average", 
+  goout == 4 ~ "High",
+  goout == 5 ~ "Very High"
+))
+
+d.all$goout = factor(d.all$goout, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
+
+d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+```
+
+
+A similar trend appears when we compare student performance and the frequency of social interactions, measured by the number of times they go out. 
+
+
+
+## Alcohol 
+
 
 ```{r}
 d.mat$subject = "Maths"
@@ -38,14 +111,17 @@ d.all <- d.all %>% mutate(Medu = case_when(Medu == 0 ~ "None",
                                   Medu == 3 ~ "Secondary Education", 
                                   Medu == 4 ~ "Higher Education"))
 
+
 d.all$Medu = factor(d.all$Medu, levels =  c("None", "4th Grade", "5th - 9th Grade",  "Secondary Education", "Higher Education"), ordered = TRUE )
 #levels(d.all$Medu) = c("None", "4th Grade", "5th - 9th Grade",  "Secondary Education", "Higher #Education")
 
 d.all %>% 
   ggplot(aes(x = Medu, y = G3, fill = subject)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Subject") + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
+# (but mother's education matters)
 
 In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
+
 
 ```{r}
 
