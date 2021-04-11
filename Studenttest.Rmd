@@ -1,0 +1,222 @@
+---
+title: "Student"
+author: "Asela Gunatilake, 500534267"
+date: "10/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(caret)
+
+```
+
+# Loading data
+2 datasets, 1 math, 1 portugese 
+
+```{r}
+d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
+d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+
+d.all=merge(d.mat,d.port,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
+print(nrow(d.all)) # 382 students
+
+```
+
+```{r}
+head(d.mat)
+
+```
+Predictor levels
+```{r}
+unique(d.mat$school) #binary, two schools
+unique(d.mat$age) #int, from 18 to 22 but most less than 20
+hist(d.mat$age)
+unique(d.mat$address) #binary, R:rural, U:urban
+unique(d.mat$famsize) #binary, Greater than or equal to 3: GT3
+unique(d.mat$Pstatus) #binany, parent status, living together - T
+unique(d.mat$Medu) #Ordinal, o -4 scale, mother's education
+unique(d.mat$Fedu)
+unique(d.mat$Mjob) #nominal, 5 levels
+unique(d.mat$Fjob)
+unique(d.mat$reason) #nominal, 5 levels reason to select school
+unique(d.mat$guardian) #nominal, 3 levels 
+unique(d.mat$traveltime) #interval, 4 levels
+unique(d.mat$studytime) #interval, 4 levels
+unique(d.mat$failures) #ratio, max 4
+unique(d.mat$schoolsup) #binary, extra school support 
+unique(d.mat$famsup) #binary
+unique(d.mat$paid) #binary, extra school support
+unique(d.mat$activities) #binary, extra curricular
+unique(d.mat$nursery) #binary, attended
+unique(d.mat$higher) #binary, wants to attend higher edu
+unique(d.mat$internet) #binary, int. access from home
+unique(d.mat$romantic) #binary
+unique(d.mat$famrel) #ordinal, quality of family relationship 1-5 levels
+unique(d.mat$freetime) #ordinal, 1-5 levels
+unique(d.mat$goout) #ordinal, 1-5 levels
+unique(d.mat$Dalc) #ordinal, 1-5 levels, workday alcohol consumption
+unique(d.mat$Walc) #ordinal, 1-5 levels, weekend alcohol consumption
+unique(d.mat$health) #ordinal, 1-5 levels
+unique(d.mat$absences) #ratio, 0- 93
+hist(d.mat$absences)
+
+```
+Dependent var for Math
+```{r}
+hist(d.mat$G1, freq = FALSE, breaks = 10)
+hist(d.mat$G2, freq = FALSE, breaks = 10)
+hist(d.mat$G3, freq = FALSE, breaks = 10)
+
+
+d.mat$G4 <- (0.3*d.mat$G1 + 0.3*d.mat$G2 + 0.4*d.mat$G3)/20 #computed a composite score as main dependendent variable
+
+
+d.mat[1:6,-(1:30)]
+
+hist(d.mat$G4, freq = FALSE, breaks = 12)
+```
+
+Dependent var for Port
+```{r}
+hist(d.port$G1, freq = FALSE, breaks = 10)
+hist(d.port$G2, freq = FALSE, breaks = 10)
+hist(d.port$G3, freq = FALSE, breaks = 10)
+
+
+d.port$G4 <- (0.3*d.port$G1 + 0.3*d.port$G2 + 0.4*d.port$G3)/20 #computed a composite score as main dependendent variable
+
+
+d.port[1:6,-(1:30)]
+
+hist(d.port$G4, freq = FALSE, breaks = 12)
+```
+
+
+Studytime and results
+```{r}
+boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ studytime, data = d.port, main= "Studytime and Mark for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+Family supp and results
+```{r}
+boxplot(G4 ~ famsup, data = d.mat, main= "Studytime and Mark for maths")
+boxplot(G4 ~ famsup, data = d.port, main= "Studytime and Mark for Portugese")
+```
+Mothers education and results
+```{r}
+boxplot(G4 ~ Medu, data = d.mat, main= "Mothers education and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Medu, data = d.port, main= "Mothers education and Mark for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+Fathers education and results
+```{r}
+boxplot(G4 ~ Fedu, data = d.mat, main= "Fathers education and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Fedu, data = d.port, main= "Fathers education and Mark for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+Mothers Job and results
+```{r}
+boxplot(G4 ~ Mjob, data = d.mat, main= "Mothers Job and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Mjob, data = d.port, main= "Mothers Job and Mark for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+Fathers Job and results
+```{r}
+boxplot(G4 ~ Fjob, data = d.mat, main= "Fathers Job and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Mjob, data = d.port, main= "Mothers Job and Mark for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+
+Family Status and results
+```{r}
+boxplot(G4 ~ Pstatus, data = d.mat, main= "Family Status and results for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Pstatus, data = d.port, main= "Family Status and results for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+Urban/rural and results
+```{r}
+boxplot(G4 ~ address, data = d.mat, main= "Urban/rural and results for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ address, data = d.port, main= "Urban/rural and results for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+```{r}
+plot(studytime ~ traveltime, data = d.mat)  
+```
+
+
+
+```{r}
+mat.pca = prcomp(~ Medu + Fedu + studytime + traveltime + age + G4, data= d.mat, retx = TRUE, center = TRUE, scale. = TRUE)
+mat.pca
+
+summary(mat.pca)
+
+biplot(mat.pca)
+
+```
+
+
+```{r}
+
+lm1 <- lm(G4 ~ age +address +paid + famsup + internet + Pstatus + studytime + traveltime, data = d.mat)
+summary(lm1)
+```
+```{r}
+
+lm2 <- lm(G4 ~ age  +paid + famsup + studytime + traveltime + romantic + famsize , data = d.mat)
+summary(lm2)
+```
+
+
+```{r}
+
+lm3 <- lm(G4 ~ age +log(if(absences==0,0.1)) + paid + famsup + studytime + traveltime + romantic + famsize , data = d.mat)
+summary(lm3)
+```
+
+
+
+#TODO: Logistic regression  
+greater than 0.5 = pass
+
+```{r}
+d.mat$G5 <- ifelse(d.mat$G4 >= 0.5, 1, 0) #1 for pass
+
+summary(d.mat$G5)
+
+d.mat$G6 <- ifelse(d.mat$G4 >= mean(d.mat$G4), 1, 0)
+
+logit.model <- glm(G6 ~ studytime + traveltime + Medu + Fedu  , data= d.mat)
+summary(logit.model)
+
+```
+```{r}
+d.port$G5 <- ifelse(d.port$G4 >= 0.5, 1, 0) #1 for pass
+
+summary(d.port$G5)
+
+d.port$G6 <- ifelse(d.port$G4 >= mean(d.port$G4), 1, 0)
+
+logit.model <- glm(G6 ~ studytime + traveltime + Medu + Fedu , data= d.port)
+summary(logit.model)
+
+```
+
+
+
+#TODO: 

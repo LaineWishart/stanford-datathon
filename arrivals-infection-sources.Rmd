@@ -101,7 +101,8 @@ What proportion of COVID-19 cases come from international arrivals?
 cases_long <- cases %>%
   pivot_longer(cols = c("domestic", "international"), names_to = "infection_source", values_to = "cases") 
 
-cases_long_grpd <- cases_long %>% group_by(state, month = lubridate::floor_date(date, "month"), infection_source) %>% summarize(cases = sum(cases)) 
+# Asela: I changed the frequency of the plot from month to week
+cases_long_grpd <- cases_long %>% group_by(state, week = lubridate::floor_date(date, "week", week_start = 7), infection_source) %>% summarize(cases = sum(cases)) 
 
 
 cases_long_grpd %>% 
