@@ -8,7 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
-library(caret)
+library(ggpubr)
 
 ```
 
@@ -137,6 +137,65 @@ boxplot(G4 ~ Mjob, data = d.port, main= "Mothers Job and Mark for Portugese")
 abline(h=mean(d.port$G4), col= "blue", lty="dashed")
 ```
 
+Student sex and results
+```{r}
+boxplot(G4 ~ sex, data = d.mat, main= "Student sex and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ sex, data = d.port, main= "Student sex and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+
+Weekend alcohol consumption and results
+```{r}
+boxplot(G4 ~ Walc , data = d.mat, main= "Weekend alcohol consumption and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Walc , data = d.port, main= "Weekend alcohol consumption and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat, "Walc")
+```
+Weekday alcohol consumption and results
+```{r}
+boxplot(G4 ~ Dalc , data = d.mat, main= "Weekday alcohol consumption and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ Dalc , data = d.port, main= "Weekday alcohol consumption and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat, "Dalc")
+```
+
+Paid for extra classes
+```{r}
+boxplot(G4 ~ paid , data = d.mat, main= "Paid for extra classes and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ paid , data = d.port, main= "Paid for extra classes and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat, "paid")
+```
+
+freetime 
+```{r}
+boxplot(G4 ~ freetime  , data = d.mat, main= "freetime and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ freetime  , data = d.port, main= "freetime and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat, "freetime")
+```
+goout  
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ goout   , data = d.mat, main= "Going out and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ goout   , data = d.port, main= "Going out  and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat, "goout")
+```
+
+
 
 Family Status and results
 ```{r}
@@ -144,6 +203,8 @@ boxplot(G4 ~ Pstatus, data = d.mat, main= "Family Status and results for maths")
 abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
 boxplot(G4 ~ Pstatus, data = d.port, main= "Family Status and results for Portugese")
 abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat$Pstatus=="A")
 ```
 
 Urban/rural and results
@@ -152,6 +213,38 @@ boxplot(G4 ~ address, data = d.mat, main= "Urban/rural and results for maths")
 abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
 boxplot(G4 ~ address, data = d.port, main= "Urban/rural and results for Portugese")
 abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+nursery and results
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ nursery, data = d.mat, main= "nursery and results for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ nursery, data = d.port, main= "nursery and results for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+```
+
+
+School and results
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ school, data = d.mat, main= "School and results for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ school, data = d.port, main= "School and results for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat$school=="GP")
+```
+
+
+schoolsup and results
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ schoolsup, data = d.mat, main= "schoolsup and results for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ schoolsup, data = d.port, main= "schoolsup and results for Portugese")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+plyr::count(d.mat$schoolsup=="no")
 ```
 
 ```{r}
@@ -217,6 +310,15 @@ summary(logit.model)
 
 ```
 
+
+```{r}
+
+
+lm4 <- lm(G4 ~ studytime + traveltime + Medu^2 + Fedu + failures^2 + age, data= d.port)
+summary(lm4)
+plot(lm4)
+
+```
 
 
 #TODO: 
