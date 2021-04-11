@@ -2,11 +2,10 @@
 title: "What you can and can't do to change your grades"
 author: "Laine Wishart and Asela Gunatilake"
 date: "11/04/2021"
-output: 
+output:
+  pdf_document: default
   html_document:
     code_folding: hide
-
-
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +28,7 @@ In this sample of students, aged between 16 - 22,male female ratio, attended two
 We have divided the attributes based on environmental, non, controllable factors (e.g. age, gender, family background) and  "factors that can be controlled by the student" xx (e.g. number of hours spent studying, frequency of going out, alcohol consumption ). Our analyses indicate that both factors played a role in determining student grade and may be transferable to university setting. 
 
 
-More importantly, students who found a __"goldilocks"__ zone between work and life appeared to perform strongest as a group.
+More importantly, students who found a __"goldilocks"__ zone between work and life appeared to perform strongest as a group. 
 
 
 __top achievers what did they look like???maybe look at the top 5% and find their attributes???__
@@ -40,14 +39,19 @@ __top achievers what did they look like???maybe look at the top 5% and find thei
 
 # Student choices on student achievement (to do)  
 
-Important to note the balance between 
-
+The dataset has 
 
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
 
 ```{r}
 d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
 d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+
+
+d.mat$G4 <- (0.3*d.mat$G1 + 0.3*d.mat$G2 + 0.4*d.mat$G3)/20 
+d.port$G4 <- (0.3*d.port$G1 + 0.3*d.port$G2 + 0.4*d.port$G3)/20 
+
+
 par(mfrow=c(1,2))
 boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
 abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
@@ -56,26 +60,28 @@ abline(h=mean(d.port$G4), col= "blue", lty="dashed")
 #caption: weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
 ```
 
-In this study, students were able to achieve better marks by increasing the weekly study time for both math and language. However, it is important to note that studying more than 10h per week per subject did not necessarily improve students academic performance, we can observe this in "Fig. x" where grades for Portuguese in fact deteriorated relative to students who studied between 5 - 10 hours a week. This may be due to additional studying infringing on students' free time and the ability to engage in social and other extra curricular activities.  
+In most cases, students who studied more hours per week were able to transfer their effort in to better grades albeit at a diminishing rate. However, it appears the scores deteriorated for the cohort of students that studied more than 10 hours per week relative to the cohort of students who reportedly studied between 5 to 10 hours per week. This may be indicative of  additional studying time infringing on students' free-time and the ability to engage in social activities. As we explore in the subsequent chapters, _"all-work no play"_ strategy may not neccasarly equates to gains in grades.   
 
 
-## Not having free time is expensive, having too much of it is not good either
+## Not having free time is expensive, having too much of it is worse
 ```{r}
 d.all <- d.all %>% mutate(freetime = case_when(
-  freetime == 1 ~"Very Low", 
+  freetime == 1 ~ "Very Low", 
   freetime == 2 ~ "Low", 
   freetime == 3 ~ "Average", 
   freetime == 4 ~ "High",
   freetime == 5 ~ "Very High"
 ))
 
-d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = freetime, y = G4)) + geom_boxplot() + 
+  labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + 
+  theme_bw() + facet_wrap(~ subject, nrow = 2)
 ```
 
-The results based on this dataset shows that not having or having very limited free time negatively impacts student grades whilst having too much free time deteriorates performance. This is more strongly applicable for the performance in the language test. For both math and language a _"goldilocks"_ level of free time appears to correspond with the cohort of strongest academic performance.  
+The results based on the sample of 365 students, shows that having very little free time and having too much free time can both result in lower grades. This result is more pronounced in language test results. However, for both math and language a _"goldilocks"_ zone of "free time" appears to correspond with the cohort of strongest academic achievers. This result is inline with the conventional wisdom that achieving a optimal _"work live balance"_ is beneficial for academic accomplishment.
 
 
-## Findind the sweetspot in going out
+## Finding the sweetspot in going out
 
 ```{r}
 
@@ -92,9 +98,7 @@ d.all$goout = factor(d.all$goout, levels = c("Very Low","Low","Average","High",'
 d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
 ```
 
-
-A similar trend appears when we compare student performance and the frequency of social interactions, measured by the number of times they go out. 
-
+A similar trend appears when we compare student performance and their frequency of social interactions, measured by the number of times they go out per week. The cohort of students who report they "go out" at a "low" frequency attain the highest average grade surpassing all other cohorts. This result may indicate that some form of social interaction is necessary for a student to achieve a positive frame of mind needed to excel academically. The caveat for this condition is too much "going out" may detrimentally impact performance.  
 
 
 ## Alcohol 
