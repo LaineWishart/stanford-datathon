@@ -22,6 +22,15 @@ library(janitor)
 
 ```
 
+```{r}
+d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
+d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+d.mat$subject = "Maths"
+d.port$subject = "Portugese"
+d.all <- rbind(d.mat, d.port) #%>% mutate(Medu = as.factor(Medu), 
+                 #studytime = as.factor(studytime))
+```
+
 breaking down the factors that influence your grades based on a the dataset.
 
 In this sample of students, aged between 16 - 22,male female ratio, attended two schools in Portugal, demographic data were collected among with scores for Math and Portuguese. 
@@ -46,14 +55,14 @@ Important to note the balance between
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
 
 ```{r}
-d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
-d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+d.all <- d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
+                                       studytime == 2 ~ "[2-5)", 
+                                       studytime == 3 ~ "[3-10)", 
+                                       studytime == 4~ "[4-10)")) 
+
+d.all %>% ggplot(aes(x = studytime, y = G3, fill = subject)) + geom_boxplot() + labs( title = "Academic performance by study time", x = "Study time (hours)", y = "Academic performance") 
 par(mfrow=c(1,2))
-boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
-abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
-boxplot(G4 ~ studytime, data = d.port, main= "Studytime and Mark for language")
-abline(h=mean(d.port$G4), col= "blue", lty="dashed")
-#caption: weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+
 ```
 
 In this study, students were able to achieve better marks by increasing the weekly study time for both math and language. However, it is important to note that studying more than 10h per week per subject did not necessarily improve students academic performance, we can observe this in "Fig. x" where grades for Portuguese in fact deteriorated relative to students who studied between 5 - 10 hours a week. This may be due to additional studying infringing on students' free time and the ability to engage in social and other extra curricular activities.  
@@ -101,10 +110,7 @@ A similar trend appears when we compare student performance and the frequency of
 
 
 ```{r}
-d.mat$subject = "Maths"
-d.port$subject = "Portugese"
-d.all <- rbind(d.mat, d.port) #%>% mutate(Medu = as.factor(Medu), 
-                 #studytime = as.factor(studytime))
+
 d.all <- d.all %>% mutate(Medu = case_when(Medu == 0 ~ "None",
                                   Medu == 1 ~ "4th Grade", 
                                   Medu == 2 ~ "5th - 9th Grade", 
@@ -125,10 +131,7 @@ In this study, a student's mark in both Portugese and Math increased positively 
 
 ```{r}
 
-d.all <- d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
-                                       studytime == 2 ~ "[2-5)", 
-                                       studytime == 3 ~ "[3-10)", 
-                                       studytime == 4~ "[4-10)")) 
+
 
 d.all %>% ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
