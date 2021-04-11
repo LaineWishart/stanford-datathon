@@ -9,7 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Families staying together does not impact student marks 
+# What you and can't do to change your grades
+
+
+# Family influence on student achievement (done) 
+
+
+# Student choices on student achievement (to do)
+
+
+
+# 
 (but mother's education matters)
 
 
@@ -17,6 +27,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
   * Dataset 
   * 
+  
+
 
 ## Family status and results for maths and language (500 words)
 
