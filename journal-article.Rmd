@@ -21,6 +21,15 @@ library(janitor)
 
 ```
 
+```{r}
+d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
+d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+d.mat$subject = "Maths"
+d.port$subject = "Portugese"
+d.all <- rbind(d.mat, d.port) #%>% mutate(Medu = as.factor(Medu), 
+                 #studytime = as.factor(studytime))
+```
+
 breaking down the factors that influence your grades based on a the dataset.
 
 In this sample of students, aged between 16 - 22,male female ratio, attended two schools in Portugal, demographic data were collected among with scores for Math and Portuguese. 
@@ -44,20 +53,20 @@ The dataset has
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
 
 ```{r}
-d.mat=read.table("data/student/student-mat.csv",sep=";",header=TRUE)
-d.port=read.table("data/student/student-por.csv",sep=";",header=TRUE)
+
 
 
 d.mat$G4 <- (0.3*d.mat$G1 + 0.3*d.mat$G2 + 0.4*d.mat$G3)/20 
 d.port$G4 <- (0.3*d.port$G1 + 0.3*d.port$G2 + 0.4*d.port$G3)/20 
 
 
-par(mfrow=c(1,2))
-boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
-abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
-boxplot(G4 ~ studytime, data = d.port, main= "Studytime and Mark for language")
-abline(h=mean(d.port$G4), col= "blue", lty="dashed")
-#caption: weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+d.all <- d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
+                                       studytime == 2 ~ "[2-5)", 
+                                       studytime == 3 ~ "[3-10)", 
+                                       studytime == 4~ "[4-10)")) 
+
+d.all %>% ggplot(aes(x = studytime, y = G3, fill = subject)) + geom_boxplot() + labs( title = "Academic performance by study time", x = "Study time (hours)", y = "Academic performance") + theme_bw() 
+
 ```
 
 In most cases, students who studied more hours per week were able to transfer their effort in to better grades albeit at a diminishing rate. However, it appears the scores deteriorated for the cohort of students that studied more than 10 hours per week relative to the cohort of students who reportedly studied between 5 to 10 hours per week. This may be indicative of  additional studying time infringing on students' free-time and the ability to engage in social activities. As we explore in the subsequent chapters, _"all-work no play"_ strategy may not neccasarly equates to gains in grades.   
@@ -73,9 +82,9 @@ d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 5 ~ "Very High"
 ))
 
-d.all %>% ggplot(aes(x = freetime, y = G4)) + geom_boxplot() + 
-  labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + 
-  theme_bw() + facet_wrap(~ subject, nrow = 2)
+
+d.all %>% ggplot(aes(x = freetime, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
+
 ```
 
 The results based on the sample of 365 students, shows that having very little free time and having too much free time can both result in lower grades. This result is more pronounced in language test results. However, for both math and language a _"goldilocks"_ zone of "free time" appears to correspond with the cohort of strongest academic achievers. This result is inline with the conventional wisdom that achieving a optimal _"work live balance"_ is beneficial for academic accomplishment.
@@ -103,12 +112,25 @@ A similar trend appears when we compare student performance and their frequency 
 
 ## Alcohol 
 
-
 ```{r}
-d.mat$subject = "Maths"
-d.port$subject = "Portugese"
-d.all <- rbind(d.mat, d.port) #%>% mutate(Medu = as.factor(Medu), 
-                 #studytime = as.factor(studytime))
+
+d.all <- d.all %>% mutate(Walc = case_when(
+  Walc == 1 ~"Very Low", 
+  Walc == 2 ~ "Low", 
+  Walc == 3 ~ "Average", 
+  Walc == 4 ~ "High",
+  Walc == 5 ~ "Very High"
+))
+
+
+
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
+```
+
+
+# (but mother's education matters)
+```{r}
+
 d.all <- d.all %>% mutate(Medu = case_when(Medu == 0 ~ "None",
                                   Medu == 1 ~ "4th Grade", 
                                   Medu == 2 ~ "5th - 9th Grade", 
@@ -122,26 +144,23 @@ d.all$Medu = factor(d.all$Medu, levels =  c("None", "4th Grade", "5th - 9th Grad
 d.all %>% 
   ggplot(aes(x = Medu, y = G3, fill = subject)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Subject") + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
-# (but mother's education matters)
 
-In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in Figure (X), when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
+
+In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
 
 
 ```{r}
 
-d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
-                                       studytime == 2 ~ "[2-5)", 
-                                       studytime == 3 ~ "[3-10)", 
-                                       studytime == 4~ "[4-10)")) %>% 
 
-  ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
+
+d.all %>% ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
 
-Although parent education appears to affect how students spend their free time and shape their future academic goals, individual effort appears to pay off more for students from poorly-educated families. Figure (Y) shows that an increase in student study time for students with poorly-educated mothers pays off more than students with highly educated mothers. However, the reasons for this finding are not clear.  
+Although parent education appears to affect how students spend their free time and shape their future academic goals, individual effort appears to pay off more for students from poorly-educated families. The above figure shows there was a larger increase in sacacemic achievement per increase in hours studies for students with poorly-educated mothers compared to students with highly educated mothers. 
 
 
-# Student choices on student achievement (to do)
+# Student choices on student achievement
 
 ```{r}
 
@@ -155,7 +174,7 @@ d.all <- d.all %>% mutate(goout = case_when(
 
 d.all$goout = factor(d.all$goout, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
 
-d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
@@ -172,7 +191,7 @@ d.all <- d.all %>% mutate(Walc = case_when(
 
 
 
-d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
@@ -185,7 +204,7 @@ d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 5 ~ "Very High"
 ))
 
-d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
