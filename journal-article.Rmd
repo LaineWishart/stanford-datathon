@@ -49,14 +49,14 @@ __top achievers what did they look like???maybe look at the top 5% and find thei
 
 # Student choices on student achievement (to do)  
 
-<<<<<<< HEAD
+
 ***
 
 Important to note the balance between 
 
-=======
+
 The dataset has 
->>>>>>> a17c6d329c882472b5243add6862cbd53a18f9de
+
 
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
 
@@ -82,14 +82,10 @@ d.all %>% ggplot(aes(x = studytime, y = G3, fill = subject)) + geom_boxplot() + 
 In most cases, students who studied more hours per week were able to transfer their effort in to better grades albeit at a diminishing rate. However, it appears the scores deteriorated for the cohort of students that studied more than 10 hours per week relative to the cohort of students who reportedly studied between 5 to 10 hours per week. This may be indicative of  additional studying time infringing on students' free-time and the ability to engage in social activities. As we explore in the subsequent chapters, _"all-work no play"_ strategy may not neccasarly equates to gains in grades.   
 
 
-<<<<<<< HEAD
+
 ## Not having free time is expensive, having too much of it is not good either
 
 ***
-
-=======
-## Not having free time is expensive, having too much of it is worse
->>>>>>> a17c6d329c882472b5243add6862cbd53a18f9de
 ```{r}
 d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 1 ~ "Very Low", 
@@ -99,7 +95,7 @@ d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 5 ~ "Very High"
 ))
 
-
+d.all$freetime = factor(d.all$freetime, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
 d.all %>% ggplot(aes(x = freetime, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 
 ```
@@ -144,6 +140,7 @@ d.all <- d.all %>% mutate(Walc = case_when(
 ))
 
 
+d.all$alcohol = factor(d.all$alcohol, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
 
 d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
