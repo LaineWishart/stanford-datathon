@@ -11,16 +11,75 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # What you and can't do to change your grades
 
+breaking down the factors that influence your grades based on a the dataset.
+
+In this sample of students, aged between 16 - 22,male female ratio, attended two schools in Portugal, demographic data were collected among with scores for Math and Portuguese. 
+
+We have divided the attributes based on environmental, non, controllable factors (e.g. age, gender, family background) and  "factors that can be controlled by the student" xx (e.g. number of hours spent studying, frequency of going out, alcohol consumption ). Our analyses indicate that both factors played a role in determining student grade and may be transferable to university setting. 
+
+
+More importantly, students who found a __"goldilocks"__ zone between work and life appeared to perform strongest as a group.
+
+
+__top achievers what did they look like???maybe look at the top 5% and find their attributes???__
+
+
+
 
 # Family influence on student achievement (done) 
 
 
-# Student choices on student achievement (to do)
+# Student choices on student achievement (to do)  
+
+Important to note the balance between 
+
+
+## The amount of hours you study translates to higher marks, but at a diminishing rate  
+
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ studytime, data = d.mat, main= "Studytime and Mark for maths")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ studytime, data = d.port, main= "Studytime and Mark for language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+#caption: weekly study time (numeric: 1 - <2 hours, 2 - 2 to 5 hours, 3 - 5 to 10 hours, or 4 - >10 hours)
+```
+
+In this study, students were able to achieve better marks by increasing the weekly study time for both math and language. However, it is important to note that studying more than 10h per week per subject did not necessarily improve students academic performance, we can observe this in "Fig. x" where grades for Portuguese in fact deteriorated relative to students who studied between 5 - 10 hours a week. This may be due to additional studying infringing on students' free time and the ability to engage in social and other extra curricular activities.  
+
+
+## Not having free time is expensive, having too much of it is not good either
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ freetime  , data = d.mat, main= "freetime and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ freetime  , data = d.port, main= "freetime and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+#caption: free time after school (numeric: from 1 - very low to 5 - very high)
+```
+The results based on this dataset shows that not having or having very limited free time negatively impacts student grades whilst having too much free time deteriorates performance. This is more strongly applicable for the performance in the language test. For both math and language a _"goldilocks"_ level of free time appears to correspond with the cohort of strongest academic performance.  
+
+
+## Findind the sweetspot in going out
+```{r}
+par(mfrow=c(1,2))
+boxplot(G4 ~ goout   , data = d.mat, main= "Going out and results in Math")
+abline(h=mean(d.mat$G4), col= "blue", lty="dashed")
+boxplot(G4 ~ goout   , data = d.port, main= "Going out  and results in Language")
+abline(h=mean(d.port$G4), col= "blue", lty="dashed")
+
+#Caption: going out with friends (numeric: from 1 - very low to 5 - very high)
+```
+A similar trend appears when we compare student performance and the frequency of social interactions, measured by the number of times they go out. 
 
 
 
-# 
-(but mother's education matters)
+## Alcohol 
+
+
+
+
+# (but mother's education matters)
 
 
 ## Introduction 
