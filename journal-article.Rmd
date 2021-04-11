@@ -26,12 +26,16 @@ knitr::opts_chunk$set(echo = TRUE)
     
     * discussion 
 
-## Mothers education and mark for maths and language (500 words)
+## Mothers job and mark for maths and language (500 words)
 
   * background 
   
   * results and interpretation 
-  
-  * discussion 
+
+In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in Figure (X), when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
+
+Although parent education appears to affect how students spend their free time and shape their future academic goals, individual effort appears to pay off more for students from poorly-educated families. Figure (Y) shows that an increase in student study time for students with poorly-educated mothers pays off more than students with highly educated mothers. However, the reasons for this finding are not clear.  
+
+
 
 
