@@ -1,0 +1,37 @@
+---
+title: "Article"
+author: "Laine Wishart"
+date: "11/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Families staying together does not impact student marks 
+(but mother's education matters)
+
+
+## Introduction 
+
+  * Dataset 
+  * 
+
+## Family status and results for maths and language (500 words)
+
+    * background 
+    
+    * results and interpreation 
+    
+    * discussion 
+
+## Mothers education and mark for maths and language (500 words)
+
+  * background 
+  
+  * results and interpretation 
+  
+  * discussion 
+
+

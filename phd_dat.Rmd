@@ -1,0 +1,47 @@
+---
+title: "phd_dat"
+author: "Laine Wishart"
+date: "11/04/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readr)
+library(dplyr)
+library(tidyverse)
+library(readxl)
+library(readr)
+library(stringr)
+
+
+
+```
+
+```{r}
+
+phd_dat <- read_excel("data/Original_data_anonymised_open_comments_removed (2).xlsx") # source: https://ses.library.usyd.edu.au/handle/2123/22425
+
+
+checked_colnames = colnames(phd_dat)[str_detect(colnames(phd_dat), "checked")]
+
+
+phd_dat_long <- phd_dat %>% select(checked_colnames) %>% pivot_longer(cols =everything(), names_to = "question", values_to = "result", names_prefix = "a-zA-Z.*[cC]hecked=")
+phd_dat_qa <- phd_dat %>% select(checked_colnames) %>% pivot_longer(cols =everything(), names_to = "question", values_to = "result", names_prefix = "a-zA-Z.*checked=") %>% mutate(
+  question = str_match(phd_dat_long$question, pattern = "(.*)(checked=.*)")[,2], 
+  option = str_match(phd_dat_long$question, pattern = "(.*)(checked=.*)")[,3], 
+  result = result)# %>% mutate(answer = ifelse(result == "Checked",option,NA)) 
+
+
+phd_dat_qa$answer = str_match(str_remove(ifelse(phd_dat_qa$result == "Checked", phd_dat_qa$option, NA),"[)]"),"^checked=.([a-zA-Z].*)")[,2]
+phd_dat_qa$question = str_remove(phd_dat_qa$question, " [(]")
+
+phd_dat$question = phd_dat_qa$question 
+phd_dat$answer = phd_dat_qa$answer
+
+phd_dat_qa %>% select(question, answer) %>% pivot_wider(names_from = "question", values_from = "answer" )
+```
+
