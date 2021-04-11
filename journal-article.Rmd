@@ -45,23 +45,23 @@ d.all %>%
   ggplot(aes(x = Medu, y = G3, fill = subject)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Subject") + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
-In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in Figure (X), when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
+In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
 
 ```{r}
 
-d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
+d.all <- d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
                                        studytime == 2 ~ "[2-5)", 
                                        studytime == 3 ~ "[3-10)", 
-                                       studytime == 4~ "[4-10)")) %>% 
+                                       studytime == 4~ "[4-10)")) 
 
-  ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
+d.all %>% ggplot(aes(x = Medu, y = G3, fill = studytime)) + geom_boxplot() + labs(title = "Student performance by mother's education level", x = "Mother's education level", y = "Student performane", fill = "Study time (hours)") + theme_bw() + facet_wrap(~subject, nrow = 2) + theme(axis.text.x = element_text(angle = 45, hjust=1))
 ```
 
 
-Although parent education appears to affect how students spend their free time and shape their future academic goals, individual effort appears to pay off more for students from poorly-educated families. Figure (Y) shows that an increase in student study time for students with poorly-educated mothers pays off more than students with highly educated mothers. However, the reasons for this finding are not clear.  
+Although parent education appears to affect how students spend their free time and shape their future academic goals, individual effort appears to pay off more for students from poorly-educated families. The above figure shows there was a larger increase in sacacemic achievement per increase in hours studies for students with poorly-educated mothers compared to students with highly educated mothers. 
 
 
-# Student choices on student achievement (to do)
+# Student choices on student achievement
 
 ```{r}
 
@@ -75,7 +75,7 @@ d.all <- d.all %>% mutate(goout = case_when(
 
 d.all$goout = factor(d.all$goout, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
 
-d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = goout, y = G3)) + geom_boxplot() + labs(title = "Academic performance by time spent going out with friends", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
@@ -92,7 +92,7 @@ d.all <- d.all %>% mutate(Walc = case_when(
 
 
 
-d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by weekend alcohol consumption", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
@@ -105,7 +105,7 @@ d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 5 ~ "Very High"
 ))
 
-d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 2)
+d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
 
