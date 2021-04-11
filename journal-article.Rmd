@@ -46,13 +46,18 @@ __top achievers what did they look like???maybe look at the top 5% and find thei
 
 # Family influence on student achievement 
 
+***
 
 # Student choices on student achievement (to do)  
+
+***
 
 Important to note the balance between 
 
 
 ## The amount of hours you study translates to higher marks, but at a diminishing rate  
+
+***
 
 ```{r}
 d.all <- d.all %>% mutate(studytime = case_when(studytime == 1 ~ "[1-2)",
@@ -69,6 +74,9 @@ In this study, students were able to achieve better marks by increasing the week
 
 
 ## Not having free time is expensive, having too much of it is not good either
+
+***
+
 ```{r}
 d.all <- d.all %>% mutate(freetime = case_when(
   freetime == 1 ~"Very Low", 
@@ -85,6 +93,8 @@ The results based on this dataset shows that not having or having very limited f
 
 
 ## Findind the sweetspot in going out
+
+***
 
 ```{r}
 
@@ -108,6 +118,8 @@ A similar trend appears when we compare student performance and the frequency of
 
 ## Alcohol 
 
+***
+
 ```{r}
 
 d.all <- d.all %>% mutate(Walc = case_when(
@@ -125,6 +137,8 @@ d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academi
 
 
 # (but mother's education matters)
+
+***
 ```{r}
 
 d.all <- d.all %>% mutate(Medu = case_when(Medu == 0 ~ "None",
@@ -142,7 +156,7 @@ d.all %>%
 ```
 
 
-In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan. They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason (Lareau, 2003, 2011). Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
+In this study, a student's mark in both Portugese and Math increased positively with his mother's and father's education level. As shown in the figure above, when mothers have a low education level, their children perform poorly compared to their peers. One study in 2015 explored how parent-education levels affected student engagement in school over a period of several years in Japan (Matsuoka et al., 2015). They found that a parent's education level influenced their parenting style: highly-educated parents tend to schedule their children's time with more extracurricular activities, and place a larger emphasis on engaging language to reason. Educated parents may also have higher expectations for their children's academic achievement, which could subsequently influence their desires to pursue higher education: one study found that the mother's expectations for her children had an impact on whether they wanted to attend university (Uzuki, 2004). 
 
 
 ```{r}
@@ -157,6 +171,8 @@ Although parent education appears to affect how students spend their free time a
 
 
 # Student choices on student achievement
+
+***
 
 ```{r}
 
@@ -203,4 +219,8 @@ d.all <- d.all %>% mutate(freetime = case_when(
 d.all %>% ggplot(aes(x = Walc, y = G3)) + geom_boxplot() + labs(title = "Academic performance by free time after school", x = "", y = "Academic performance") + theme_bw() + facet_wrap(~ subject, nrow = 1)
 ```
 
+References 
 
+* Matsuoka, R., Nakamuro, M. and Inui, T., 2015. Emerging inequality in effort: A longitudinal investigation of parental involvement and early elementary school-aged children’s learning time in Japan. Social Science Research, 54, pp.159-176.
+
+* 
