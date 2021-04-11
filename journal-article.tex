@@ -102,10 +102,34 @@
 
 \title{What you can and can't do to change your grades}
 \author{Laine Wishart and Asela Gunatilake}
-\date{11/04/2021}
+\date{April 11th, 2021}
 
 \begin{document}
 \maketitle
+
+\href{https://github.com/LaineWishart/stanford-datathon}{Github repo}
+\textbar{} Team No: 113 \textbar{} Track No: 1
+
+``Nature versus nurture'' debate has been a hot topic in psychology ever
+since the expression was coined in medieval France. Despite an
+individuals innate prowess and family background, one can master their
+own path by choosing to manage time efficiently. In this article we
+explore a dataset from Portugal, of secondary school performance in
+``math'' and ``Portugese'', courtesy of Paulo Cortez from the University
+of Minho, to understand insights the habits of the high performers. The
+dataset contains information from 649 students aged between 16 - 22 that
+attended two schools in in Portaugal in 2014, including test scores and
+demographic information. We have divided the attributes to two broad
+catagories based on environmental, non, controllable factors (e.g.~age,
+gender, family background) and controllable factors (e.g.~number of
+hours spent studying, frequency of going out, alcohol consumption) to
+understands their impact on grades. Our analyses indicate that both
+factors played crucial a role in determining student performance and
+their habits may be transferable to university students who want to
+improve their acadamic performance. Our analysis shows student cohorts
+who found a \textbf{``goldilocks''} zone between work, study and life
+appear to outperform other cohorts in achieving better acadamic
+outcomes.
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -125,51 +149,59 @@
 \NormalTok{d.port}\OperatorTok{$}\NormalTok{subject =}\StringTok{ "Portugese"}
 \NormalTok{d.all <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(d.mat, d.port) }\CommentTok{#%>% mutate(Medu = as.factor(Medu), }
                  \CommentTok{#studytime = as.factor(studytime))}
-\end{Highlighting}
-\end{Shaded}
 
-breaking down the factors that influence your grades based on a the
-dataset.
-
-In this sample of students, aged between 16 - 22,male female ratio,
-attended two schools in Portugal, demographic data were collected among
-with scores for Math and Portuguese.
-
-We have divided the attributes based on environmental, non, controllable
-factors (e.g.~age, gender, family background) and ``factors that can be
-controlled by the student'' xx (e.g.~number of hours spent studying,
-frequency of going out, alcohol consumption ). Our analyses indicate
-that both factors played a role in determining student grade and may be
-transferable to university setting.
-
-More importantly, students who found a \textbf{``goldilocks''} zone
-between work and life appeared to perform strongest as a group.
-
-\textbf{top achievers what did they look like???maybe look at the top
-5\% and find their attributes???}
-
-\hypertarget{family-influence-on-student-achievement}{%
-\section{Family influence on student
-achievement}\label{family-influence-on-student-achievement}}
-
-\hypertarget{but-mothers-education-matters}{%
-\section{(but mother's education
-matters)}\label{but-mothers-education-matters}}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Medu =} \KeywordTok{case_when}\NormalTok{(Medu }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ "None"}\NormalTok{,}
 \NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "4th Grade"}\NormalTok{, }
 \NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "5th - 9th Grade"}\NormalTok{, }
 \NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Secondary Education"}\NormalTok{, }
 \NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "Higher Education"}\NormalTok{))}
 
+\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{freetime =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "Very Low"}\NormalTok{, }
+\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
+\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
+\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
+\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
+\NormalTok{))}
+
+\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{goout =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
+\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
+\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
+\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
+\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
+\NormalTok{))}
+
+
+\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{studytime =} \KeywordTok{case_when}\NormalTok{(studytime }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "[1-2)"}\NormalTok{,}
+\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "[2-5)"}\NormalTok{, }
+\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "[3-10)"}\NormalTok{, }
+\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{4}\OperatorTok{~}\StringTok{ "[4-10)"}\NormalTok{)) }
+
+
 
 \NormalTok{d.all}\OperatorTok{$}\NormalTok{Medu =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{Medu, }\DataTypeTok{levels =}  \KeywordTok{c}\NormalTok{(}\StringTok{"None"}\NormalTok{, }\StringTok{"4th Grade"}\NormalTok{, }\StringTok{"5th - 9th Grade"}\NormalTok{,  }\StringTok{"Secondary Education"}\NormalTok{, }\StringTok{"Higher Education"}\NormalTok{), }\DataTypeTok{ordered =} \OtherTok{TRUE}\NormalTok{ )}
 \CommentTok{#levels(d.all$Medu) = c("None", "4th Grade", "5th - 9th Grade",  "Secondary Education", "Higher #Education")}
 
+
+\NormalTok{d.all}\OperatorTok{$}\NormalTok{goout =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{goout, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
+
+\NormalTok{d.all}\OperatorTok{$}\NormalTok{freetime =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{freetime, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{family-influence-on-student-achievement}{%
+\section{Family influence on student
+achievement}\label{family-influence-on-student-achievement}}
+
+\hypertarget{the-things-we-cant-control}{%
+\subsection{The things we can't
+control}\label{the-things-we-cant-control}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
 \NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }
 \StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Medu, }\DataTypeTok{y =}\NormalTok{ G3, }\DataTypeTok{fill =}\NormalTok{ subject)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Student performance by mother's education level"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Mother's education level"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Student performane"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"Subject"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust=}\DecValTok{1}\NormalTok{))}
 \end{Highlighting}
@@ -192,6 +224,11 @@ subsequently influence their desires to pursue higher education: one
 study found that the mother's expectations for her children had an
 impact on whether they wanted to attend university (Uzuki, 2004).
 
+\hypertarget{hard-work-pays-off}{%
+\subsection{Hard work pays off}\label{hard-work-pays-off}}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Medu, }\DataTypeTok{y =}\NormalTok{ G3, }\DataTypeTok{fill =}\NormalTok{ studytime)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Student performance by mother's education level"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Mother's education level"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Student performane"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"Study time (hours)"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust=}\DecValTok{1}\NormalTok{))}
@@ -213,10 +250,6 @@ achievement}\label{student-choices-on-student-achievement}}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
-Important to note the balance between
-
-The dataset has
-
 \hypertarget{the-amount-of-hours-you-study-translates-to-higher-marks-but-at-a-diminishing-rate}{%
 \subsection{The amount of hours you study translates to higher marks,
 but at a diminishing
@@ -230,10 +263,6 @@ rate}\label{the-amount-of-hours-you-study-translates-to-higher-marks-but-at-a-di
 \NormalTok{d.port}\OperatorTok{$}\NormalTok{G4 <-}\StringTok{ }\NormalTok{(}\FloatTok{0.3}\OperatorTok{*}\NormalTok{d.port}\OperatorTok{$}\NormalTok{G1 }\OperatorTok{+}\StringTok{ }\FloatTok{0.3}\OperatorTok{*}\NormalTok{d.port}\OperatorTok{$}\NormalTok{G2 }\OperatorTok{+}\StringTok{ }\FloatTok{0.4}\OperatorTok{*}\NormalTok{d.port}\OperatorTok{$}\NormalTok{G3)}\OperatorTok{/}\DecValTok{20} 
 
 
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{studytime =} \KeywordTok{case_when}\NormalTok{(studytime }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "[1-2)"}\NormalTok{,}
-\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "[2-5)"}\NormalTok{, }
-\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "[3-10)"}\NormalTok{, }
-\NormalTok{                                       studytime }\OperatorTok{==}\StringTok{ }\DecValTok{4}\OperatorTok{~}\StringTok{ "[4-10)"}\NormalTok{)) }
 
 \NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ studytime, }\DataTypeTok{y =}\NormalTok{ G3, }\DataTypeTok{fill =}\NormalTok{ subject)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{( }\DataTypeTok{title =} \StringTok{"Academic performance by study time"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Study time (hours)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }
 \end{Highlighting}
@@ -260,15 +289,6 @@ either}\label{not-having-free-time-is-expensive-having-too-much-of-it-is-not-goo
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{freetime =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "Very Low"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-\NormalTok{d.all}\OperatorTok{$}\NormalTok{freetime =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{freetime, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
 \NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ freetime, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by free time after school"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -284,24 +304,18 @@ academic achievers. This result is inline with the conventional wisdom
 that achieving a optimal \emph{``work live balance''} is beneficial for
 academic accomplishment.
 
-\hypertarget{finding-the-sweetspot-in-going-out}{%
-\subsection{Finding the sweetspot in going
-out}\label{finding-the-sweetspot-in-going-out}}
+\hypertarget{finding-the-sweet-spot-in-going-out}{%
+\subsection{Finding the sweet spot in going
+out}\label{finding-the-sweet-spot-in-going-out}}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
+Further analysis showed a strong correlation between ``going out'' and
+``weekly alcohol consumption'', a variable that showed a negative
+relationship with overall grades.
+
 \begin{Shaded}
 \begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{goout =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-\NormalTok{d.all}\OperatorTok{$}\NormalTok{goout =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{goout, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
-
 \NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ goout, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by time spent going out with friends"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
@@ -317,147 +331,20 @@ is necessary for a student to achieve a positive frame of mind needed to
 excel academically. The caveat for this condition is too much ``going
 out'' may detrimentally impact performance.
 
-\hypertarget{alcohol}{%
-\subsection{Alcohol}\label{alcohol}}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Walc =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-
-\NormalTok{d.all}\OperatorTok{$}\NormalTok{Walc =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{Walc, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
-
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Walc, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by weekend alcohol consumption"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-8-1.pdf}
-
-\hypertarget{but-mothers-education-matters-1}{%
-\section{(but mother's education
-matters)}\label{but-mothers-education-matters-1}}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Medu =} \KeywordTok{case_when}\NormalTok{(Medu }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ "None"}\NormalTok{,}
-\NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "4th Grade"}\NormalTok{, }
-\NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "5th - 9th Grade"}\NormalTok{, }
-\NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Secondary Education"}\NormalTok{, }
-\NormalTok{                                  Medu }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "Higher Education"}\NormalTok{))}
-
-
-\NormalTok{d.all}\OperatorTok{$}\NormalTok{Medu =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{Medu, }\DataTypeTok{levels =}  \KeywordTok{c}\NormalTok{(}\StringTok{"None"}\NormalTok{, }\StringTok{"4th Grade"}\NormalTok{, }\StringTok{"5th - 9th Grade"}\NormalTok{,  }\StringTok{"Secondary Education"}\NormalTok{, }\StringTok{"Higher Education"}\NormalTok{), }\DataTypeTok{ordered =} \OtherTok{TRUE}\NormalTok{ )}
-\CommentTok{#levels(d.all$Medu) = c("None", "4th Grade", "5th - 9th Grade",  "Secondary Education", "Higher #Education")}
-
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }
-\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Medu, }\DataTypeTok{y =}\NormalTok{ G3, }\DataTypeTok{fill =}\NormalTok{ subject)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Student performance by mother's education level"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Mother's education level"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Student performane"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"Subject"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust=}\DecValTok{1}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-9-1.pdf}
-
-In this study, a student's mark in both Portugese and Math increased
-positively with his mother's and father's education level. As shown in
-the figure above, when mothers have a low education level, their
-children perform poorly compared to their peers. One study in 2015
-explored how parent-education levels affected student engagement in
-school over a period of several years in Japan (Matsuoka et al., 2015).
-They found that a parent's education level influenced their parenting
-style: highly-educated parents tend to schedule their children's time
-with more extracurricular activities, and place a larger emphasis on
-engaging language to reason. Educated parents may also have higher
-expectations for their children's academic achievement, which could
-subsequently influence their desires to pursue higher education: one
-study found that the mother's expectations for her children had an
-impact on whether they wanted to attend university (Uzuki, 2004).
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Medu, }\DataTypeTok{y =}\NormalTok{ G3, }\DataTypeTok{fill =}\NormalTok{ studytime)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Student performance by mother's education level"}\NormalTok{, }\DataTypeTok{x =} \StringTok{"Mother's education level"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Student performane"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"Study time (hours)"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{2}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{45}\NormalTok{, }\DataTypeTok{hjust=}\DecValTok{1}\NormalTok{))}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-10-1.pdf}
-
-Although parent education appears to affect how students spend their
-free time and shape their future academic goals, individual effort
-appears to pay off more for students from poorly-educated families. The
-above figure shows there was a larger increase in sacacemic achievement
-per increase in hours studies for students with poorly-educated mothers
-compared to students with highly educated mothers.
-
-\hypertarget{student-choices-on-student-achievement-1}{%
-\section{Student choices on student
-achievement}\label{student-choices-on-student-achievement-1}}
-
-\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{goout =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  goout }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-\NormalTok{d.all}\OperatorTok{$}\NormalTok{goout =}\StringTok{ }\KeywordTok{factor}\NormalTok{(d.all}\OperatorTok{$}\NormalTok{goout, }\DataTypeTok{levels =} \KeywordTok{c}\NormalTok{(}\StringTok{"Very Low"}\NormalTok{,}\StringTok{"Low"}\NormalTok{,}\StringTok{"Average"}\NormalTok{,}\StringTok{"High"}\NormalTok{,}\StringTok{'Very High'}\NormalTok{), }\DataTypeTok{ordered=}\OtherTok{TRUE}\NormalTok{)}
-
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ goout, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by time spent going out with friends"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-11-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Walc =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  Walc }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-
-
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Walc, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by weekend alcohol consumption"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-12-1.pdf}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{d.all <-}\StringTok{ }\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{freetime =} \KeywordTok{case_when}\NormalTok{(}
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{"Very Low"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Low"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Average"}\NormalTok{, }
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "High"}\NormalTok{,}
-\NormalTok{  freetime }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Very High"}
-\NormalTok{))}
-
-\NormalTok{d.all }\OperatorTok{%>%}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Walc, }\DataTypeTok{y =}\NormalTok{ G3)) }\OperatorTok{+}\StringTok{ }\KeywordTok{geom_boxplot}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Academic performance by free time after school"}\NormalTok{, }\DataTypeTok{x =} \StringTok{""}\NormalTok{, }\DataTypeTok{y =} \StringTok{"Academic performance"}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{theme_bw}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{facet_wrap}\NormalTok{(}\OperatorTok{~}\StringTok{ }\NormalTok{subject, }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-
-\includegraphics{journal-article_files/figure-latex/unnamed-chunk-13-1.pdf}
-
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-References
+What makes a good student from a bad student? This study from a
+Portugese highschool in 2015 shed some light on the internal and
+external factors driving student academic performance. While some
+students start off with an advantage based on their parents' education
+level, there are still many factors within a student's control. One of
+the key things we discussed here was finding the right balance between
+work and play. If there is any advice we can give to students during
+these troubling times, it is to make sure to take a breather!
+
+\hypertarget{references}{%
+\section{References}\label{references}}
 
 \begin{itemize}
 \tightlist
@@ -466,6 +353,12 @@ References
   effort: A longitudinal investigation of parental involvement and early
   elementary school-aged children's learning time in Japan. Social
   Science Research, 54, pp.159-176.
+\item
+  P. Cortez and A. Silva. Using Data Mining to Predict Secondary School
+  Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of
+  5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp.~5-12,
+  Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7. {[}Web
+  Link{]}
 \end{itemize}
 
 \end{document}

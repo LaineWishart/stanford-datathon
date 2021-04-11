@@ -3,12 +3,17 @@ title: "What you can and can't do to change your grades"
 author: "Laine Wishart and Asela Gunatilake"
 date: "April 11th, 2021"
 output:
+  pdf_document: default
   html_document:
     code_folding: hide
-  pdf_document: default
 ---
 
 [Github repo](https://github.com/LaineWishart/stanford-datathon) | Team No: 113 | Track No: 1
+
+"Nature versus nurture" debate has been a hot topic in psychology ever since the expression was coined in medieval France. Despite an individuals innate prowess and family background, one can master their own path by choosing to manage time efficiently. In this article we explore a dataset from Portugal, of secondary school performance in "math" and "Portugese", courtesy of Paulo Cortez from the University of Minho, to understand insights the habits of the high performers.
+The dataset contains information from 649 students aged between 16 - 22 that attended two schools in in Portaugal in 2014, including test scores and demographic information.
+We have divided the attributes to two broad catagories based on environmental, non, controllable factors (e.g. age, gender, family background) and controllable factors (e.g. number of hours spent studying, frequency of going out, alcohol consumption) to understands their impact on grades. Our analyses indicate that both factors played crucial a role in determining student performance and their habits may be transferable to university students who want to improve their acadamic performance.
+Our analysis shows student cohorts who found a __"goldilocks"__ zone between work, study and life appear to outperform other cohorts in achieving better acadamic outcomes.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -69,18 +74,6 @@ d.all$goout = factor(d.all$goout, levels = c("Very Low","Low","Average","High",'
 d.all$freetime = factor(d.all$freetime, levels = c("Very Low","Low","Average","High",'Very High'), ordered=TRUE)
 
 ```
-
-breaking down the factors that influence your grades based on a the dataset.
-
-In this sample of students, aged between 16 - 22,male female ratio, attended two schools in Portugal, demographic data were collected among with scores for Math and Portuguese. 
-
-We have divided the attributes based on environmental, non, controllable factors (e.g. age, gender, family background) and  "factors that can be controlled by the student" xx (e.g. number of hours spent studying, frequency of going out, alcohol consumption ). Our analyses indicate that both factors played a role in determining student grade and may be transferable to university setting. 
-
-
-More importantly, students who found a __"goldilocks"__ zone between work and life appeared to perform strongest as a group. 
-
-
-__top achievers what did they look like???maybe look at the top 5% and find their attributes???__
 
 
 # Family influence on student achievement 
@@ -159,6 +152,8 @@ The results based on the sample of 365 students, shows that having very little f
 
 ***
 
+Further analysis showed a strong correlation between "going out" and "weekly alcohol consumption", a variable that showed a negative relationship with overall grades.
+
 ```{r}
 
 
@@ -178,4 +173,5 @@ What makes a good student from a bad student? This study from a Portugese highsc
 # References 
 
 * Matsuoka, R., Nakamuro, M. and Inui, T., 2015. Emerging inequality in effort: A longitudinal investigation of parental involvement and early elementary school-aged children’s learning time in Japan. Social Science Research, 54, pp.159-176.
-
+* P. Cortez and A. Silva. Using Data Mining to Predict Secondary School Student Performance. In A. Brito and J. Teixeira Eds., Proceedings of 5th FUture BUsiness TEChnology Conference (FUBUTEC 2008) pp. 5-12, Porto, Portugal, April, 2008, EUROSIS, ISBN 978-9077381-39-7.
+[Web Link]
